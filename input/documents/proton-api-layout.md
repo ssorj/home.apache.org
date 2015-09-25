@@ -40,36 +40,33 @@ Proton-based application.
 
 ### AMQP data types
 
-For a particular language, the AMQP type names may be prone to
-collisions.  In that case, it may make sense to give them a uniform
-prefix, as in `amqp_null` for null or `AmqpString` for string.
+These names should reflect the type names in the specification.
 
 <div class="four-column" markdown="1">
 
- - binary
- - boolean
- - null
- - ubyte
- - ushort
- - uint
- - ulong
- - byte
- - short
- - int
- - long
- - float
- - double
- - decimal32
- - decimal64
- - decimal128
- - char
- - timestamp
- - uuid
- - bindary
- - string
- - symbol
- - list
- - map
+ - amqp-binary
+ - amqp-boolean
+ - amqp-null
+ - amqp-ubyte
+ - amqp-ushort
+ - amqp-uint
+ - amqp-ulong
+ - amqp-byte
+ - amqp-short
+ - amqp-int
+ - amqp-long
+ - amqp-float
+ - amqp-double
+ - amqp-decimal32
+ - amqp-decimal64
+ - amqp-decimal128
+ - amqp-char
+ - amqp-timestamp
+ - amqp-uuid
+ - amqp-string
+ - amqp-symbol
+ - amqp-list
+ - amqp-map
 
 </div>
 
@@ -89,8 +86,8 @@ prefix, as in `amqp_null` for null or `AmqpString` for string.
 
 ## Namespace 'proton' or 'proton/core'
 
-This is the primary user entry point for the API.  Most example
-programs will import only this namespace.
+This is the primary user entry point for the event-driven API.  Most
+example programs will import only this namespace.
 
 ### AMQP model entities
 
