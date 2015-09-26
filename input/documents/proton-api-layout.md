@@ -97,6 +97,7 @@ example programs will import only this namespace.
  - container
  - connection
  - session
+ - session-error or -exception
  - link
  - receiver
  - sender
@@ -134,6 +135,7 @@ example programs will import only this namespace.
 <div class="two-column" markdown="1">
 
  - transport
+ - transport-error or -exception
  - ssl
  - ssl-domain
  - ssl-error or -exception
@@ -145,8 +147,6 @@ example programs will import only this namespace.
  
  - proton-error or proton-exception
  - timeout-error or -exception
- - transport-error or -exception
- - session-error or -exception
 
 ### Important utilities
 
