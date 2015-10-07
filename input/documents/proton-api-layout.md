@@ -6,15 +6,13 @@
 |----------------------------|-----------------------------------------------|------------------------------|
 | [proton/amqp][1]           | AMQP data encoding and decoding               | proton/internal if needed    |
 | [proton or proton/core][2] | AMQP model, event processing, error handling  | proton/amqp                  |
-| [proton/blocking][3]       | Utility classes for blocking operations       | proton or proton/core        |
-| [proton/messenger][5]      | Home of the Messenger API                     | proton or proton/core        |
+| [proton/messenger][3]      | Home of the Messenger API                     | proton or proton/core        |
 | [proton/internal][4]       | API internals and language extensions         | -                            |
 
 [1]: #namespace-protonamqp
 [2]: #namespace-protoncore-or-proton
-[3]: #namespace-protonblocking
+[3]: #namespace-protonmessenger
 [4]: #namespace-protoninternal
-[5]: #namespace-protonmessenger
 
 ## Entity names
 
@@ -40,7 +38,9 @@ Proton-based application.
 
 ### AMQP data types
 
-These names should reflect the type names in the specification.
+These names must reflect the type names in the AMQP specification.
+Because they are prone to collisions with language keywords, they must
+the carry the "amqp" prefix.
 
 <div class="four-column" markdown="1">
 
@@ -122,7 +122,7 @@ example programs will import only this namespace.
  - timer
  - task
  - selectable
- - handler
+ - general-handler
  - outgoing-message-handler
  - incoming-message-handler
  - transaction-handler
@@ -156,22 +156,6 @@ prominently in common code such as examples.
  - duration
  - url
  - url-error or -exception
-
-## Namespace 'proton/blocking'
-
-Utility classes for blocking operations.  They provide blocking
-behavior on top of the Proton core API.
-
-<div class="two-column" markdown="1">
-
- - blocking-container
- - blocking-connection
- - blocking-link
- - blocking-receiver
- - blocking-sender
- - request-response
-
-</div>
 
 ## Namespace 'proton/messenger'
 
