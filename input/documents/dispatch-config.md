@@ -1,35 +1,47 @@
 # Dispatch configuration proposal
 
+Updated 12 May 2016.
+
 ## Related material
 
- - <http://qpid.apache.org/releases/qpid-dispatch-trunk/qdrouterd.conf.5.html>
- - <https://svn.apache.org/repos/asf/qpid/dispatch/trunk/etc/qdrouterd.conf>
+ - <https://github.com/apache/qpid-dispatch/blob/master/etc/qdrouterd.conf>
+ - <https://github.com/apache/qpid-dispatch/blob/master/tests/policy-2/test-router-with-policy.json.in>
+ - <http://qpid.apache.org/releases/qpid-dispatch-master/man/qdrouterd.conf.html>
+
+## Questions and issues
+
+ - What is displayNameFile for?  Should that be part of the *router*
+   config?  What is the user supposed to do with it?
+ - qdrouterd.conf has "router.config.address" as a heading instead of
+   "address".  Intentional?
+ - Console is presented as a section with no properties.
+ - Should we remove password?
+ - qdrouterd.conf has "ssl-profile" in an example
 
 ## Proposed changes
 
- - Use "key" for named config blocks; use "${type}_id" for references
-   from without
- - Use a standard list syntax throughout
- - Describe comment syntax
+### General
 
- - Collapse container and router to simply router
- - Collapse containerName and routerId to "id", inside router
- - id has no default, and it's required
- - Default workerThreads to 4, remove from shipped config
- - Remove sslProfile from shipped config
- - Consider adding builtins for _closes, _multicast, etc.  Use a safer
-   prefix for these? `_qd_`?
- - Use requireSasl=no instead of allowNoSasl=yes
- - Default addr to all interfaces
- - Default port to 5672
- - Default mode (was routerMode) to standalone
- - Eliminate waypoints
- - Eliminate password
- - Instead of requirePeerAuth, requireClientAuth=no in listener and
-   requireServerAuth=yes in connector (and requirePeerAuth has
-   incorrect help text)
- - Use updateInterval instead of raInterval
- - Remove remoteLsMaxAge
+ - Don't use routerId or addr in example configs
+ - idleTimeoutSeconds -> idleTimeout - Document the unit but don't put
+   it in the name, same as helloInterval, helloMaxAge, raInterval
+ - dir -> direction - To avoid collision with directory
+ - Use a standard list syntax throughout and document it in
+   qdrouterd.conf man page
+ - Describe comment syntax in qdrouterd.conf man page
+ - Consider removing password
+ - saslConfigPath -> saslConfigFile - Matching certFile, keyFile,
+   passwordFile, displayNameFile
+ - debugDump -> debugFile
+
+### Policy
+
+ - Remove the standalone "policy" block; move its attributes to router
+ - Replace policyRuleset with vhost
+ - Locate group policy attributes with the group definition
+ - Offer both allowRemoteHostGroups (which looks up a group by key)
+   and allowRemoteHosts (which takes a list of IPs and IP ranges
+   directly)
 
 ## Minimal example
 
@@ -37,49 +49,67 @@
             id: router1
         }
 
-        # If no listener is supplied, a default listener (key: default) is
-        # created with no ssl profile, bound to all local interfaces
+        listener {
+            # According to the docs, no properties are necessary here
+        }
 
-## Basic example (incomplete)
+## Policy example
 
         router {
             id: router1
+            enablePolicy: true
+            maxConnections: 10
         }
 
         listener {
-            addr: 127.0.0.1
-            port: amqp
+            host: 127.0.0.1
         }
-        
-        connector {
-            # XXX incomplete!
+
+        vhost {
+            name: alpha.example.com
+            maxConnections: 12
+            allowUnknownUser: true
+            groups {
+                admin {
+                    users: alice, adam
+                    maxFrameSize: 3
+                    allowRemoteHosts: 10.0.0.1, 10.0.0.11
+                    allowSources: a, b
+                    allowTargets: x, y
+                }
+                other {
+                    users: bob, george
+                    maxSessions: 12
+                    allowRemoteHosts: 0.0.0.0
+                    allowAnonymousSender: true
+                }
+            }
         }
 
 ## Annotated example (incomplete)
 
         router {
-            id: router1               # Renamed from routerId; no default and required
-            mode: standalone          # Default to standalone
-            workerThreads: 99         # Default to 4
-            debugDump: /some/path
-            # Tunables
-            helloInterval: 1
-            helloMaxAge: 3
-            updateInterval: 30        # Renamed from raInterval
-            updateIntervalFlux: 4     # Is this important to have as a tuneable?
-            # Remove: containerName, remoteLsMaxAge, mobileAddrMaxAge
+            id: router1                  # Required and no default
+            # mode: standalone           # Required: standalone or interior
+            # saslConfigName: qdrouterd
+            # saslConfigFile: [path]
+            # debugFile:
+            # workerThreads: 4
+            # helloInterval: 1
+            # helloMaxAge: 3
+            # raInterval: 30
+            # raIntervalFlux: 4
         }
 
         listener {
-            addr: 127.0.0.1           # Change default to 127.0.0.1?
-            port: amqp
-            role: normal              # normal, interRouter, onDemand
-            requireClientAuth: false  # 
-            certDb: /some/cert.db
-            certFile: /some/cert.pem
-            keyFile: /some/cert.pem
-            # ^^ Should one of cert/keyFile default to the value of the other?
-            passwordFile: /some/password.file
-            # Remove: password
+            # host: 127.0.0.1
+            # port: amqp
+            # protocolFamily: [computed] # IPv4, IPv6, or none
+            # role: normal               # normal, inter-outer, on-demand
+            requireClientAuth: false     # 
+            # certDb:
+            # certFile:
+            # keyFile:
+            # passwordFile:
+            # password:
         }
-

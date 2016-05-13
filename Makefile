@@ -14,7 +14,7 @@ publish:
 	transom input ${temp_dir} --site-url "http://home.apache.org/~jross"
 #	rsync -av ${temp_dir}/ jross@home.apache.org:public_html
 	echo 'lcd ${temp_dir}' >> ${temp_script}
-	cd ${temp_dir} && find * -type d -exec echo '-mkdir -p {}' \; >> ${temp_script}
+	cd ${temp_dir} && find * -type d -exec echo '-mkdir {}' \; >> ${temp_script}
 	cd ${temp_dir} && find * -type f -exec echo 'put {} {}' \; >> ${temp_script}
 	sftp -b ${temp_script} jross@home.apache.org:public_html
 	rm -rf ${temp_dir}

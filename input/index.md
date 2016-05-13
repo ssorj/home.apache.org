@@ -1,7 +1,9 @@
 # Justin Ross at Apache
 
+[Proton API spec](pumpjack/index.html)
+
 [Documents](documents/index.html)
 
-[Public key](C6B459DB.asc)
+[Miscellaneous](misc/index.html)
 
-[Qpid website staging area](qpid-site/head/index.html)
+[Public key](C6B459DB.asc)
