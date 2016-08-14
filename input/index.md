@@ -4,6 +4,6 @@
 
 [Documents](documents/index.html)
 
-[Miscellaneous](misc/index.html)
+[Miscellaneous](misc/)
 
 [Public key](C6B459DB.asc)

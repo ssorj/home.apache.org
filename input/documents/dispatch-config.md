@@ -39,9 +39,8 @@ Updated 12 May 2016.
  - Remove the standalone "policy" block; move its attributes to router
  - Replace policyRuleset with vhost
  - Locate group policy attributes with the group definition
- - Offer both allowRemoteHostGroups (which looks up a group by key)
-   and allowRemoteHosts (which takes a list of IPs and IP ranges
-   directly)
+ - Consider allowRemoteHosts (taking ips and ip ranges) instead of the
+   host group business
 
 ## Minimal example
 
@@ -106,7 +105,7 @@ Updated 12 May 2016.
             # port: amqp
             # protocolFamily: [computed] # IPv4, IPv6, or none
             # role: normal               # normal, inter-outer, on-demand
-            requireClientAuth: false     # 
+            # authenticatePeer:          # What is the default?
             # certDb:
             # certFile:
             # keyFile:
